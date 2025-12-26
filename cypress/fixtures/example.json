@@ -1,0 +1,5 @@
+{
+  "cpf": "11111111111",
+  "password": "admin999",
+  "body": "Fixtures are a great way to mock data for responses to routes"
+}
