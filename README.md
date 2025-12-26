@@ -1,104 +1,101 @@
-# 🚀 POC Fintech - Automação de Testes com Cypress
+# 🏦 POC Fintech - Automação E2E com Cypress e Cucumber
 
-> Projeto de automação de testes End-to-End (E2E) para a aplicação Fintech, utilizando Cypress e boas práticas de QA.
+Este projeto consiste na automação de testes End-to-End (E2E) para uma aplicação Fintech, utilizando **Cypress** integrado com **Cucumber** para escrita de cenários em BDD (Behavior Driven Development).
 
-![Cypress](https://img.shields.io/badge/-cypress-%23E5E5E5?style=for-the-badge&logo=cypress&logoColor=058a5e)
-![JavaScript](https://img.shields.io/badge/javascript-%23323330.svg?style=for-the-badge&logo=javascript&logoColor=%23F7DF1E)
-![NodeJS](https://img.shields.io/badge/node.js-6DA55F?style=for-the-badge&logo=node.js&logoColor=white)
-
-## 📋 Sobre o Projeto
-
-Este repositório contém a suíte de testes automatizados para validar as funcionalidades críticas do sistema Fintech. O objetivo é garantir a qualidade do software através de testes rápidos, confiáveis e de fácil manutenção.
-
-### 🛠 Tecnologias Utilizadas
-
-- **[Cypress](https://www.cypress.io/)**: Framework de automação de testes moderna.
-- **Node.js**: Ambiente de execução JavaScript.
-- **GitLab CI/CD**: Para integração contínua (futuro).
-- **Mochawesome Report**: Gerador de relatórios visuais (configuração recomendada).
+O projeto foi estruturado utilizando o padrão **Page Objects** para garantir manutenibilidade, escalabilidade e reutilização de código.
 
 ---
 
-## ⚙️ Pré-requisitos
+## 🚀 Tecnologias Utilizadas
 
-Antes de começar, certifique-se de ter instalado em sua máquina:
+*   **[Cypress](https://www.cypress.io/)**: Framework de testes automatizados.
+*   **[Cucumber Preprocessor](https://github.com/TheBrainFamily/cypress-cucumber-preprocessor)**: Integração para rodar especificações `.feature`.
+*   **JavaScript (ES6+)**: Linguagem de programação.
+*   **Node.js**: Ambiente de execução.
 
-- **[Node.js](https://nodejs.org/)** (Versão 16 ou superior recomendada)
-- **Git**
+---
 
-## 🚀 Instalação
+## 📂 Arquitetura do Projeto
 
-1. Clone o repositório:
-```bash
-git clone git@gitlab.com:GilvanS/poc-fintech-cypress.git
+O projeto segue uma separação clara de responsabilidades:
+
+```text
+cypress/
+├── e2e/
+│   ├── elements/      # Mapeamento de seletores (CSS/ID/XPath)
+│   ├── features/      # Arquivos .feature (Gherkin)
+│   ├── pages/         # Lógica de interação com a página (Page Objects)
+│   └── steps/         # Definição dos passos (Step Definitions)
+├── fixtures/          # Massa de dados estática (JSON)
+└── support/           # Configurações globais e comandos customizados
 ```
 
-2. Acesse a pasta do projeto:
-```bash
-cd poc-fintech-cypress
-```
+### Detalhes da Implementação
 
-3. Instale as dependências:
+1.  **Features**: Descrevem o comportamento esperado em linguagem natural (Gherkin).
+2.  **Steps**: Fazem a ponte entre o Gherkin e o código JavaScript. Eles **não contêm lógica de página**, apenas chamam os métodos das Pages.
+3.  **Pages**: Contêm os métodos que interagem com a página (cliques, preenchimentos). Elas encapsulam o uso de `cy.get` e `cy.fixture`.
+4.  **Elements**: Arquivos que retornam apenas os seletores dos elementos, facilitando a manutenção caso o ID ou Class de um elemento mude.
+
+---
+
+## 🥒 Features (Cenários de Teste)
+
+Atualmente, o projeto cobre as seguintes funcionalidades principais:
+
+### 1. Login (`login.feature`)
+Responsável por validar o acesso do usuário ao sistema.
+
+*   **Cenário Principal**: `Validar login com sucesso`
+    *   Acessa a tela de login.
+    *   Preenche CPF e Senha (dados consumidos via `fixture`).
+    *   Valida o redirecionamento para a home logada.
+
+### 2. Cadastro (`cadastro.feature`)
+Responsável pelo fluxo de novos usuários.
+
+*   **Cenários**:
+    *   Validar mensagem de boas-vindas.
+    *   Realizar cadastro de novo usuário (fluxo de abertura de conta).
+
+---
+
+## ⚙️ Como Configurar e Rodar
+
+### Pré-requisitos
+*   Node.js instalado.
+
+### Instalação
+Clone o repositório e instale as dependências:
+
 ```bash
 npm install
-# ou
-npm i
 ```
 
-4. Para abrir o Cypress pela primeira vez:
-```bash
-npx cypress open
-```
+### Executando os Testes
 
----
-
-## 🏃‍♂️ Como Rodar os Testes
-
-### Modo Interativo (Cypress Open)
-Abre a interface gráfica do Cypress para ver os testes rodando em tempo real. Ideal para desenvolvimento e debug.
+Para abrir a interface interativa do Cypress (Test Runner):
 
 ```bash
-npx cypress open
-# ou
 npm run cypress:open
 ```
 
-### Modo Headless (Cypress Run)
-Executa os testes no terminal, sem abrir o navegador. Ideal para CI/CD e execução rápida.
-
-```bash
-npx cypress run
-```
-
-### Rodar uma Spec Específica
-```bash
-npx cypress run --spec "cypress/e2e/minha-spec.cy.js"
-```
+Isso abrirá a janela do Cypress onde você poderá selecionar `E2E Testing` e escolher qual arquivo `.feature` deseja executar.
 
 ---
 
-## 📂 Estrutura do Projeto
+## 📝 Exemplo de Código (Gherkin)
 
+Exemplo de como os testes são escritos em `login.feature`:
+
+```gherkin
+Feature: Validar a tela de Login
+
+  @CT-01.1
+  Scenario: Validar login com sucesso
+    Given clico no botao "Acessar minha conta" na tela "Login"
+    And que estou na página de login
+    When preencho o campo "CPF" na tela login
+    And preencho o campo "Senha" na tela login
+    Then clico no botão "Entrar" na tela login
 ```
-poc-fintech-cypress/
-├── cypress/
-│   ├── e2e/             # Arquivos de teste (.cy.js)
-│   ├── fixtures/        # Massas de dados (JSON)
-│   ├── support/         # Comandos customizados e configurações globais
-│   └── videos/          # Evidências de execução (gerado automaticamente)
-├── cypress.config.js    # Arquivo de configuração do Cypress
-├── package.json         # Dependências e scripts do projeto
-├── README.md            # Documentação do projeto
-└── .gitignore           # Arquivos ignorados pelo Git
-```
-
-## 🤝 Contribuição
-
-1. Crie uma branch para sua feature (`git checkout -b feature/nova-feature`)
-2. Commit suas mudanças (`git commit -m 'Adiciona novos testes de login'`)
-3. Faça o push para a branch (`git push origin feature/nova-feature`)
-4. Abra um Merge Request
-
----
-
-_Desenvolvido com foco em qualidade e automação._
