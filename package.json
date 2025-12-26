@@ -4,7 +4,9 @@
   "description": "> Projeto de automação de testes End-to-End (E2E) para a aplicação Fintech, utilizando Cypress e boas práticas de QA.",
   "main": "index.js",
   "scripts": {
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run --spec 'cypress/e2e/features/**/*.feature'",
+    "test": "cypress run --spec 'cypress/e2e/features/**/*.feature'"
   },
   "repository": {
     "type": "git",
@@ -19,13 +21,13 @@
   },
   "homepage": "https://gitlab.com/GilvanS/poc-fintech-cypress#readme",
   "devDependencies": {
-    "cypress": "^15.8.1",
+    "cypress": "^13.6.0",
+    "cypress-cucumber-preprocessor": "^4.3.1",
     "cypress-xpath": "^2.0.1"
   },
   "cypress-cucumber-preprocessor": {
     "stepDefinitions": [
-      "cypress/support/step_definitions/**/*.{js,ts}",
-      "cypress/support/step_definitions/*.{js,ts}"
+      "cypress/e2e/steps/*.{js,ts}"
     ]
   }
 }
