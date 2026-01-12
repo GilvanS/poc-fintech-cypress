@@ -13,5 +13,4 @@ export class LoginElements {
     campoSenhaLogin = () => { return '#login-password'}
     btnEntrar = () => { return '#btn-login-submit'}
 
-
 }
